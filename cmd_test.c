@@ -1,17 +1,21 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "test.h"
 
 // COPIE DES VARIABLES ENVIRONNEMENT DANS UNE LISTE CHAINEE
 
-typedef	struct s_env
-{
-		char			*key;
-		char			*value;
-		struct s_env	*next;
-}				t_env;
+// typedef	struct s_env
+// {
+// 		char			*key;
+// 		char			*value;
+// 		struct s_env	*next;
+// }				t_env;
 
 
-// int	ft_pwd(void);
+int	ft_pwd(void);
+int	ft_cd(char *s, t_env *envi);
+int	ft_env(t_env *envi, int env_len);
+
 int	ft_tablen(char **tab)
 {
 	int i;
@@ -127,36 +131,47 @@ void	ft_addenv(t_env **list, char **env, int i)
 	return ;
 }
 
+void	ft_envsetup(t_env **envi, int env_len, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (i < env_len)
+	{
+		ft_addenv(envi, env, i);
+		i++;
+	}
+}
+
+void	ft_freeenv(t_env **envi, int env_len)
+{
+	int		i;
+	t_env	*bob;
+
+	i = 0;
+	while (i < env_len)
+	{
+		bob = (*envi)->next;
+		free((*envi));
+		(*envi) = bob;
+		i++;
+	}
+	free((*envi));
+}
+
 int	main(int ac, char **av, char **env)
 {
 	(void)ac;
-	(void)av;
+	// (void)av;
 	t_env	*envi;
-	int		env_len;
-	int		i;
 
 	envi = NULL;
 	// envi = malloc(sizeof(t_env));
 	// ft_inienv(&envi);
-	env_len = ft_tablen(env);
-	i = 0;
-	while (i < env_len)
-	{
-		ft_addenv(&envi, env, i);
-		i++;
-	}
-	i = 0;
-	t_env	*bob;
-	while (i < env_len)
-	{
-		printf("%s = %s\n", envi->key, envi->value);
-		bob = envi->next;
-		free(envi);
-		envi = bob;
-		// free(bob);
-		i++;
-	}
-	free(envi);
-	// printf("$? = %d\n", ft_pwd());
+	ft_envsetup(&envi, ft_tablen(env), env);
+	ft_cd(av[1], envi);
+	ft_pwd();
+	ft_env(envi, ft_tablen(env));
+	ft_freeenv(&envi, ft_tablen(env));
 	return 0;
 }
