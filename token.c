@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 17:21:44 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/04 17:50:56 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/06 17:44:32 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_token *linked_list_add(char* value,t_token_type type)
     return (new_node);
 }
 
-t_token *linked_list_add_last(t_token **list, t_token *new_token)
+void *linked_list_add_last(t_token **list, t_token *new_token)
 {
 	t_token *current;
 
