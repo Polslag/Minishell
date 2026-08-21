@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 17:02:47 by pilagach          #+#    #+#             */
-/*   Updated: 2025/12/01 17:19:04 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/18 02:01:17 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,4 @@ char	**ft_split(char const *s, char c)
 	if (alloc_n_write(strs, (char *)s, c) == 0)
 		return (ft_free_tab(strs));
 	return (strs);
-}	
+}
