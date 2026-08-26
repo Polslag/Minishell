@@ -178,6 +178,8 @@ int	e_wait(t_command *cmd)
 			else if (WIFSIGNALED(wstatus))
 				g_error = 128 + WTERMSIG(wstatus);
 		}
+		else if (cmd->pid == -1)
+			g_error = 1;
 		cmd = cmd->next;
 	}
 	return (g_error);
@@ -185,10 +187,11 @@ int	e_wait(t_command *cmd)
 
 int	exec(t_data *data)
 {
-	t_command *node;
-	int err;
-	int saved_0;
-	int saved_1;
+	t_command	*node;
+	int			err;
+	int			saved_0;
+	int			saved_1;
+	int			ret;
 
 	node = data->cmd;
 	err = 0;
@@ -204,6 +207,7 @@ int	exec(t_data *data)
 			node->fd_out = STDOUT_FILENO;
 		if (node->redir && e_redir(node))
 		{
+			node->pid = -1;
 			e_closefds(node);
 			node = node->next;
 			continue ;
@@ -217,12 +221,14 @@ int	exec(t_data *data)
 
 				dup2(node->fd_in, 0);
 				dup2(node->fd_out, 1);
-				e_builtin(node, data);
+				ret = e_builtin(node, data);
 
 				dup2(saved_0, 0);
 				dup2(saved_1, 1);
 				close(saved_0);
 				close(saved_1);
+				e_closefds(node);
+				return (ret);
 			}
 			else
 				e_fork(node, data);
