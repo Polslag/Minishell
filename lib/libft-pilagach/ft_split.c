@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 17:02:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/18 02:01:17 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/26 02:57:16 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_strcpy(char *d, char *src, char c)
 	int	i;
 
 	i = 0;
-	while (!(src [i] == c) && src[i])
+	while (!(src[i] == c) && src[i])
 	{
 		d[i] = src[i];
 		i++;

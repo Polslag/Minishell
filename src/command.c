@@ -94,7 +94,7 @@ void	free_command_list(t_command **list)
 	*list = NULL;
 }
 
-t_command	*parsing_commands(t_token *tokens)
+t_command	*parsing_commands(t_token *tokens, t_data *data)
 {
 	t_token		*current;
 	t_command	*list;
@@ -104,7 +104,7 @@ t_command	*parsing_commands(t_token *tokens)
 	list = NULL;
 	while (current)
 	{
-		cmd = parse_command(&current);
+		cmd = parse_command(&current, data);
 		if (!cmd)
 		{
 			free_command_list (&list);

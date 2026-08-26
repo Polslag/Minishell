@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/21 14:26:26 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/26 03:39:38 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	is_exit(char *input)
 {
 	if (input == NULL)
 		return (1);
-	if (!ft_strncmp(input, "exit\0", 5) || !ft_strncmp(input, "exit ", 5))
+	if (!ft_strcmp(input, "exit\0") || !ft_strcmp(input, "exit "))
 		return (1);
 	return (0);
 }
 
-void	check_token(char *input)
+t_command	*check_token(char *input, t_data *data)
 {
 	t_token		*tokens;
 	t_command	*cmd;
@@ -53,30 +53,37 @@ void	check_token(char *input)
 	if (tokens == NULL)
 	{
 		free(input);
-		return ;
+		return (NULL);
 	}
 	if (syntax(tokens))
 	{
 		free_token_list(&tokens);
 		printf("%s\n", "error");
 		free(input);
-		return ;
+		return (NULL);
 	}
-	cmd = parsing_commands(tokens);
+	cmd = parsing_commands(tokens, data);
 	free_token_list(&tokens);
 	if (cmd == NULL)
 	{
 		free(input);
-		return ;
+		return (NULL);
 	}
-	free_command_list(&cmd);
 	free(input);
+	return (cmd);
 }
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	char	*input;
+	t_data	*data;
 
+	(void)ac;
+	(void)av;
+	data = malloc(sizeof(t_data));
+	data->cmd = NULL;
+	data->envi = ft_envsetup(ft_tablen(env), env);
+	data->last_return = 0;
 	init_signals();
 	while (1)
 	{
@@ -88,10 +95,12 @@ int	main(void)
 			break ;
 		}
 		if (input[0] != '\0')
-		{
 			add_history(input);
-		}
-		check_token(input);
+		data->cmd = check_token(input, data);
+		data->last_return = exec(data);
 	}
+	ft_freeenv(&data->envi);
+	free_command_list(&data->cmd);
+	free(data);
 	return (0);
 }

@@ -38,7 +38,7 @@ static t_token	*walk_segment(t_token *start, int *count)
 	return (current);
 }
 
-static char	**build_argv(t_token *start, int count)
+static char	**build_argv(t_token *start, int count, t_data *data)
 {
 	char	**argv;
 	t_token	*current;
@@ -55,7 +55,7 @@ static char	**build_argv(t_token *start, int count)
 			current = current->next->next;
 		else
 		{
-			argv[i++] = ft_strdup(current->value);
+			argv[i++] = expand_word(current->value, data);
 			current = current->next;
 		}
 	}
@@ -63,7 +63,7 @@ static char	**build_argv(t_token *start, int count)
 	return (argv);
 }
 
-static void	build_redir(t_token *start, t_command *cmd)
+static void	build_redir(t_token *start, t_command *cmd, t_data *data)
 {
 	t_token	*current;
 	char	*file;
@@ -73,7 +73,7 @@ static void	build_redir(t_token *start, t_command *cmd)
 	{
 		if (is_redir_type(current->type))
 		{
-			file = ft_strdup(current->next->value);
+			file = expand_word(current->next->value, data);
 			redir_add_last(&cmd->redir, redir_add(file, current->type));
 			current = current->next->next;
 		}
@@ -82,7 +82,7 @@ static void	build_redir(t_token *start, t_command *cmd)
 	}
 }
 
-t_command	*parse_command(t_token **token)
+t_command	*parse_command(t_token **token, t_data *data)
 {
 	t_token		*seg_start;
 	t_token		*end;
@@ -94,13 +94,13 @@ t_command	*parse_command(t_token **token)
 	cmd = command_add_init();
 	if (!cmd)
 		return (NULL);
-	cmd->argv = build_argv(seg_start, count);
+	cmd->argv = build_argv(seg_start, count, data);
 	if (!cmd->argv)
 	{
 		free(cmd);
 		return (NULL);
 	}
-	build_redir(seg_start, cmd);
+	build_redir(seg_start, cmd, data);
 	if (end)
 		*token = end->next;
 	else

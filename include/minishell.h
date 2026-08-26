@@ -6,21 +6,23 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/19 17:10:08 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/26 03:16:45 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include "libft-pilagach/libft.h"
 # include <fcntl.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
+# include <stdlib.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 typedef enum e_state
 {
@@ -56,7 +58,7 @@ typedef struct s_command
 	pid_t				pid;
 	struct s_command	*next;
 	struct s_command	*prev;
-}					t_command;
+}						t_command;
 
 typedef struct s_token
 {
@@ -66,6 +68,20 @@ typedef struct s_token
 	struct s_token		*prev;
 }						t_token;
 
+typedef struct s_env
+{
+	char				*key;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
+
+typedef struct s_data
+{
+	t_command			*cmd;
+	t_env				*envi;
+	int					last_return;
+}						t_data;
+
 int						ft_strncmp(const char *str1, const char *str2,
 							size_t n);
 
@@ -74,6 +90,7 @@ int						syntax(t_token *list);
 int						handle_word(char *line, int *i, t_token **token_list);
 void					handle_operator(char *line, int *i,
 							t_token **token_list);
+void					state_change(t_state *state, char c);
 
 t_token					*linked_list_add(char *value, t_token_type type);
 void					linked_list_add_last(t_token **list,
@@ -85,12 +102,41 @@ void					redir_add_last(t_redir **list, t_redir *new_redir);
 void					free_command_list(t_command **list);
 t_command				*command_add_init(void);
 void					command_add_last(t_command **list, t_command *new_cmd);
-t_command				*parse_command(t_token **tokenn);
-t_command				*parsing_commands(t_token *tokens);
+t_command				*parse_command(t_token **tokenn, t_data *data);
+t_command				*parsing_commands(t_token *tokens, t_data *data);
 void					init_signals(void);
 void					handlesignal(int signal);
 int						is_exit(char *input);
-void					check_token(char *input);
+t_command				*check_token(char *input, t_data *data);
 void					debug(t_command *cmd);
+char					*expand_word(char *raw, t_data *data);
+//
+// built-in
+int						ft_pwd(void);
+int						ft_cd(char *s, t_env **envi);
+int						ft_env(t_env **envi);
+int						ft_export(char **arg, t_env **envi);
+int						ft_unset(t_env **envi, char **cmd);
+int						ft_echo(t_command *cmd);
+int						ft_exit(t_data *data);
+// split value and key from env
+char					*ft_split_key(char **env, int i);
+char					*ft_split_value(char **env, int i);
+// set-up t_env
+int						ft_tablen(char **tab);
+void					ft_addenv(t_env **list, char **env, int i);
+t_env					*ft_envsetup(int env_len, char **env);
+// free t_env
+void					ft_freeenv(t_env **envi);
+// env_utils
+void					ft_strcat(char *dst, char *src);
+char					**convert_env_to_array(t_env *env);
+char					*ft_getenv_value(t_env *envi, char *key);
+
+int						find_path_env(char **ev);
+char					**obtain_path(char **ev);
+char					*command_path(char *cmd, char **path);
+
+int						exec(t_data *data);
 
 #endif
