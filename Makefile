@@ -11,6 +11,7 @@ END_COLOR    := \033[0;39m
 
 SRCS    =    src/handle.c \
             src/exec.c \
+            src/exec_utils.c \
             src/debug.c \
             src/command.c \
             src/parser.c \
