@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 17:02:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/26 02:57:16 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 15:16:48 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_strcpy(char *d, char *src, char c)
 	d[i] = '\0';
 }
 
-static char	**ft_free_tab(char **strs)
+char	**ft_free_tab(char **strs)
 {
 	int	i;
 
