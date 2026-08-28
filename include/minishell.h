@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:58:03 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 16:15:49 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-# define GR "\033[32m"
-# define BL "\033[34m"
-# define RD "\033[31m"
-# define WH "\033[0m"
+# include <sys/stat.h>
 
 typedef enum e_state
 {
@@ -147,8 +143,9 @@ void					ft_inienv(t_env **list);
 t_env					*ft_lstlast(t_env **list);
 void					ft_addenv(t_env **list, char **env, int i);
 t_env					*ft_envsetup(int env_len, char **env);
-// free t_env
+// free utils
 void					ft_freeenv(t_env **envi);
+void					ft_free_data(t_data *data);
 // env_utils
 int						get_envlen(t_env *env);
 void					ft_strcat(char *dst, char *src);
@@ -168,6 +165,7 @@ int						e_fork(t_command *cmd, t_data *data);
 int						e_wait(t_command *cmd);
 int						exec(t_data *data);
 
-void					ft_error_output(t_data *data, char *title, char *content, char *color);
+void					ft_error_output(t_data *data, char *title,
+							char *content);
 
 #endif

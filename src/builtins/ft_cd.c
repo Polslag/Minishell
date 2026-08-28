@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:38 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/24 13:21:33 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 16:05:12 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,16 @@ void	pwdold(char *oldpwd, t_env **envi)
 	}
 }
 
+void	cd_error(char *s)
+{
+	write(1, "cd: ", 4);
+	write(1, s, ft_strlen(s));
+	if (!access(s, F_OK))
+		write(1, ": Not a directory\n", 18);
+	else
+		write(1, ": No such file or directory\n", 28);
+}
+
 int	ft_cd(char *s, t_env **envi)
 {
 	char	*path;
@@ -100,7 +110,11 @@ int	ft_cd(char *s, t_env **envi)
 	if (!path)
 		return (1);
 	if (chdir(path) < 0)
+	{
+		cd_error(s);
+		free(path);
 		return (1);
+	}
 	newpwd(envi);
 	pwdold(oldpwd, envi);
 	free(path);

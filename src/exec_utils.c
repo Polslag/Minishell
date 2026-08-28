@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/28 07:20:00 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:59:23 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 17:59:40 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ int	e_child(t_command *cmd, t_data *data)
 	env = convert_env_to_array(data->envi);
 	cmdpath = e_execbuilder(cmd, env);
 	execve(cmdpath, cmd->argv, env);
+	write(1, cmd->argv[0], ft_strlen(cmd->argv[0]));
+	write(1, ": command not found\n", 20);
 	exit(127);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:57:57 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 07:23:08 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 17:59:42 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,17 @@ int	e_wait(t_command *cmd)
 
 int	exec(t_data *data)
 {
-	t_command *node;
-	int err;
-	int saved_0;
-	int saved_1;
-	int ret;
+	t_command	*node;
+	int			err;
+	int			saved_0;
+	int			saved_1;
+	int			ret;
 
 	node = data->cmd;
 	err = 0;
 	(void)err;
 	while (node)
 	{
-		// printf("passage N%d\n", i++);
 		if (node == data->cmd)
 			node->fd_in = STDIN_FILENO;
 		if (node->next)

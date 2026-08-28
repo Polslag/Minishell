@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 14:14:33 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/26 02:55:19 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 16:11:30 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	get_envlen(t_env *env)
 	}
 	return (i);
 }
+
 void	ft_strcat(char *dst, char *src)
 {
 	while (*dst)
@@ -47,9 +48,9 @@ char	*ft_getenv_value(t_env *envi, char *key)
 
 char	**convert_env_to_array(t_env *env)
 {
-	t_env *node;
-	char **array;
-	int i;
+	t_env	*node;
+	char	**array;
+	int		i;
 
 	i = 0;
 	node = env;
