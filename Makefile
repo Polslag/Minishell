@@ -21,7 +21,7 @@ SRCS    =    src/handle.c \
             src/token.c \
 			src/env_setup.c \
 			src/env_split.c \
-			src/free_env.c \
+			src/free_utils.c \
 			src/env_utils.c \
 			src/utils_path.c \
 			src/expand.c \
