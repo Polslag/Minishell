@@ -1,0 +1,115 @@
+ INFO  If your program wait for stdin input, you can type here or pipe it.
+───────────── TTY ────────────
+minishell$ ls
+ls
+include  lib  Makefile	minishell  README.md  src  test
+minishell$ d
+d
+minishell$ f
+f
+minishell$ exit
+──────────────────────────────
+ TASK  Testable functions fetching  ✓ 
+ INFO  Functions detected count: 422
+
+┏ Segmentation fault 
+┗━┳━━ ft_strlen at ?? (0x403bd9)
+  ┗━┳━━ ft_strjoin at ?? (0x404101)
+    ┗━┳━━ append_str at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:25 (0x402c25)
+      ┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:89 (0x402e9f)
+        ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+          ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+            ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+              ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+                ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+┏ malloc  the crash occurred when this function failed
+┗━┳━━ ft_strjoin at ?? (0x404131)
+  ┗━┳━━ append_str at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:25 (0x402c25)
+    ┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:89 (0x402e9f)
+      ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+        ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+          ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+            ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+              ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+─────────── OUTPUT ───────────
+──────────────────────────────
+
+┏ Segmentation fault 
+┗━┳━━ ft_strlen at ?? (0x403bd9)
+  ┗━┳━━ ft_strjoin at ?? (0x404101)
+    ┗━┳━━ append_str at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:25 (0x402c25)
+      ┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:89 (0x402e9f)
+        ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+          ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+            ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+              ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+                ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+┏ malloc  the crash occurred when this function failed
+┗━┳━━ ft_strdup at ?? (0x403f94)
+  ┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:81 (0x402e55)
+    ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+      ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+        ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+          ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+            ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+─────────── OUTPUT ───────────
+──────────────────────────────
+
+┏ Segmentation fault 
+┗━┳━━ ft_strlen at ?? (0x403bd9)
+  ┗━┳━━ ft_strjoin at ?? (0x404101)
+    ┗━┳━━ append_str at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:25 (0x402c25)
+      ┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:89 (0x402e9f)
+        ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+          ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+            ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+              ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+                ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+┏ malloc  the crash occurred when this function failed
+┗━┳━━ ft_strdup at ?? (0x403f94)
+  ┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:81 (0x402e55)
+    ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+      ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+        ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+          ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+            ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+─────────── OUTPUT ───────────
+──────────────────────────────
+
+┏ Segmentation fault 
+┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:84 (0x402ebc)
+  ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+    ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+      ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+        ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+          ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+┏ malloc  the crash occurred when this function failed
+┗━┳━━ ft_substr at ?? (0x404079)
+  ┗━┳━━ handle_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/handle.c:47 (0x400776)
+    ┗━┳━━ lexer at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/token.c:86 (0x4020e7)
+      ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:52 (0x401b59)
+        ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+─────────── OUTPUT ───────────
+──────────────────────────────
+
+┏ Segmentation fault 
+┗━┳━━ expand_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/expand.c:84 (0x402ebc)
+  ┗━┳━━ build_argv at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:58 (0x401567)
+    ┗━┳━━ parse_command at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/parser.c:97 (0x4016bd)
+      ┗━┳━━ parsing_commands at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/command.c:107 (0x4013db)
+        ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:65 (0x401bc8)
+          ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+┏ malloc  the crash occurred when this function failed
+┗━┳━━ ft_substr at ?? (0x404079)
+  ┗━┳━━ handle_word at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/handle.c:47 (0x400776)
+    ┗━┳━━ lexer at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/token.c:86 (0x4020e7)
+      ┗━┳━━ check_token at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:52 (0x401b59)
+        ┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:94 (0x401ca9)
+─────────── OUTPUT ───────────
+──────────────────────────────
+
+┏ Segmentation fault 
+┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:84 (0x401c29)
+┏ malloc  the crash occurred when this function failed
+┗━━━━ main at /home/ysapelie/Documents/cc/rank 3/minishell/Minishell_Perso/src/shell.c:83 (0x401c21)
+
