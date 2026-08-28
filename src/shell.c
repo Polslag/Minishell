@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:22:41 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 14:35:46 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	is_exit(char *input)
 	return (0);
 }
 
-t_command	*check_token(char *input)
+t_command	*check_token(char *input, t_data *data)
 {
 	t_token		*tokens;
 	t_command	*cmd;
@@ -53,26 +53,24 @@ t_command	*check_token(char *input)
 	if (tokens == NULL)
 	{
 		free(input);
-		return NULL;
+		return (NULL);
 	}
 	if (syntax(tokens))
 	{
 		free_token_list(&tokens);
 		printf("%s\n", "error");
 		free(input);
-		return NULL;
+		return (NULL);
 	}
-	cmd = parsing_commands(tokens);
+	cmd = parsing_commands(tokens, data);
 	free_token_list(&tokens);
 	if (cmd == NULL)
 	{
 		free(input);
-		return NULL;
+		return (NULL);
 	}
-	// debug(cmd);
-	// free_command_list(&cmd);
 	free(input);
-	return(cmd);
+	return (cmd);
 }
 
 int	main(int ac, char **av, char **env)
@@ -93,11 +91,10 @@ int	main(int ac, char **av, char **env)
 		{
 			ft_exit(data);
 		}
-
 		if (input[0] != '\0')
 			add_history(input);
-		data->cmd = check_token(input);
-		exec(data);
+		data->cmd = check_token(input, data);
+		data->last_return = exec(data);
 	}
 	rl_clear_history();
 	ft_freeenv(&data->envi);

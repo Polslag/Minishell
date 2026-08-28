@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/26 03:16:45 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 14:40:44 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define GR "\033[32m"
+# define BL "\033[34m"
+# define RD "\033[31m"
+# define WH "\033[0m"
 
 typedef enum e_state
 {
@@ -124,7 +129,7 @@ int						ft_echo(t_command *cmd);
 int						ft_exit(t_data *data);
 int						ft_isoperand(char c);
 int						ft_is_only_num(char *str);
-void					ft_exit_abc(t_data *data);
+int						ft_exit_abc(t_data *data);
 int						ft_already_key(char *key, t_env **envi);
 int						ft_check_key(char *key);
 void					ft_change_key(char *s, char *key, t_env **envi);
@@ -162,5 +167,7 @@ int						e_child(t_command *cmd, t_data *data);
 int						e_fork(t_command *cmd, t_data *data);
 int						e_wait(t_command *cmd);
 int						exec(t_data *data);
+
+void					ft_error_output(t_data *data, char *title, char *content, char *color);
 
 #endif

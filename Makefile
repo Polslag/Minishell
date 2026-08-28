@@ -25,6 +25,7 @@ SRCS    =    src/handle.c \
 			src/env_utils.c \
 			src/utils_path.c \
 			src/expand.c \
+			src/output_utils.c \
 			src/builtins/ft_cd.c \
 			src/builtins/ft_echo.c \
 			src/builtins/ft_env.c \
