@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/26 03:39:38 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 14:22:41 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	is_exit(char *input)
 	return (0);
 }
 
-t_command	*check_token(char *input, t_data *data)
+t_command	*check_token(char *input)
 {
 	t_token		*tokens;
 	t_command	*cmd;
@@ -53,52 +53,53 @@ t_command	*check_token(char *input, t_data *data)
 	if (tokens == NULL)
 	{
 		free(input);
-		return (NULL);
+		return NULL;
 	}
 	if (syntax(tokens))
 	{
 		free_token_list(&tokens);
 		printf("%s\n", "error");
 		free(input);
-		return (NULL);
+		return NULL;
 	}
-	cmd = parsing_commands(tokens, data);
+	cmd = parsing_commands(tokens);
 	free_token_list(&tokens);
 	if (cmd == NULL)
 	{
 		free(input);
-		return (NULL);
+		return NULL;
 	}
+	// debug(cmd);
+	// free_command_list(&cmd);
 	free(input);
-	return (cmd);
+	return(cmd);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	char	*input;
-	t_data	*data;
+	char		*input;
+	t_data		*data;
 
 	(void)ac;
 	(void)av;
 	data = malloc(sizeof(t_data));
 	data->cmd = NULL;
 	data->envi = ft_envsetup(ft_tablen(env), env);
-	data->last_return = 0;
 	init_signals();
 	while (1)
 	{
 		input = readline("minishell$ ");
-		if (is_exit(input))
+		if (input == NULL)
 		{
-			printf("%s\n", "exit");
-			free(input);
-			break ;
+			ft_exit(data);
 		}
+
 		if (input[0] != '\0')
 			add_history(input);
-		data->cmd = check_token(input, data);
-		data->last_return = exec(data);
+		data->cmd = check_token(input);
+		exec(data);
 	}
+	rl_clear_history();
 	ft_freeenv(&data->envi);
 	free_command_list(&data->cmd);
 	free(data);
