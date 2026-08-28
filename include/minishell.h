@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 15:47:34 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 17:40:22 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ t_command				*check_token(char *input, t_data *data);
 void					debug(t_command *cmd);
 char					*expand_word(char *raw, t_data *data);
 int						heredoc(char *limiter);
+void					ft_free_data(t_data *data);
+
 
 //
 // built-in

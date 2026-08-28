@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 15:00:03 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 17:40:41 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_exit_abc(t_data *data)
 	write(data->cmd->fd_out, ": numeric argument required\n", 28);
 	write(data->cmd->fd_out, WH, ft_strlen(WH));
 	ft_freeenv(&(data->envi));
-	// ft_free_data(data);
+	// ft_free_data(data) ;
 	return(2);
 }
 
@@ -56,7 +56,7 @@ int	ft_exit(t_data *data, int flag)
 	if (flag)
 	{
 		write(1, "exit\n", 5);
-		// ft_free_data(data);
+		ft_free_data(data);
 		exit(0);
 	}
 	write(data->cmd->fd_out, "exit\n", 5);
