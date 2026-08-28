@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/28 07:20:00 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 07:19:44 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 14:59:23 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	e_builtin(t_command *cmd, t_data *data)
 	else if (!ft_strcmp(cmd->argv[0], "echo"))
 		ret = ft_echo(cmd);
 	else if (!ft_strcmp(cmd->argv[0], "exit"))
-		ret = ft_exit(data);
+		ret = ft_exit(data, 0);
 	return (ret);
 }
 

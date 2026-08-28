@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:40:44 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 14:58:03 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int						ft_env(t_env **envi);
 int						ft_export(char **arg, t_env **envi);
 int						ft_unset(t_env **envi, char **cmd);
 int						ft_echo(t_command *cmd);
-int						ft_exit(t_data *data);
+int						ft_exit(t_data *data, int flag);
 int						ft_isoperand(char c);
 int						ft_is_only_num(char *str);
 int						ft_exit_abc(t_data *data);

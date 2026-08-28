@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 14:36:22 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 15:00:03 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,17 @@ int	ft_exit_abc(t_data *data)
 	return(2);
 }
 
-int	ft_exit(t_data *data)
+int	ft_exit(t_data *data, int flag)
 {
 	int	value;
 
-	write(data->cmd->fd_out, "exit\n", 5);	
+	if (flag)
+	{
+		write(1, "exit\n", 5);
+		// ft_free_data(data);
+		exit(0);
+	}
+	write(data->cmd->fd_out, "exit\n", 5);
 	if (data->cmd->argv[1] && data->cmd->argv[2])
 	{
 		ft_error_output(data, "exit:", " too many arguments\n", RD);
