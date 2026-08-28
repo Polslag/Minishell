@@ -9,33 +9,36 @@ END_COLOR    := \033[0;39m
 # **************************************************************************** #
 # VARIABLES
 
-SRCS    =    handle.c \
-            exec.c \
-            debug.c \
-            command.c \
-            parser.c \
-            redir.c \
-            shell.c \
-            syntax.c \
-            token.c \
-			env_setup.c \
-			env_split.c \
-			free_env.c \
-			env_utils.c \
-			utils_path.c \
-			built-in/ft_cd.c \
-			built-in/ft_echo.c \
-			built-in/ft_env.c \
-			built-in/ft_exit.c \
-			built-in/ft_export.c \
-			built-in/ft_pwd.c \
-			built-in/ft_unset.c
+SRCS    =    src/handle.c \
+            src/exec.c \
+            src/exec_utils.c \
+            src/debug.c \
+            src/command.c \
+            src/parser.c \
+            src/redir.c \
+            src/shell.c \
+            src/syntax.c \
+            src/token.c \
+			src/env_setup.c \
+			src/env_split.c \
+			src/free_utils.c \
+			src/env_utils.c \
+			src/utils_path.c \
+			src/expand.c \
+			src/output_utils.c \
+			src/builtins/ft_cd.c \
+			src/builtins/ft_echo.c \
+			src/builtins/ft_env.c \
+			src/builtins/ft_exit.c \
+			src/builtins/ft_export.c \
+			src/builtins/ft_pwd.c \
+			src/builtins/ft_unset.c
 OBJ        =    ${SRCS:.c=.o}
-HEADER    =   minishell.h
+HEADER    =   include/minishell.h
 NAME    =    minishell
-LIB        =    libft-pilagach/libft.a
+LIB        =    lib/libft-pilagach/libft.a
 CC        =    cc
-CFLAGS    =    -Wall -Wextra -Werror
+CFLAGS    =    -Wall -Wextra -Werror -Iinclude -Ilib
 
 # **************************************************************************** #
 # RULES
@@ -45,8 +48,8 @@ CFLAGS    =    -Wall -Wextra -Werror
 	@echo -e "$(BLUE)Compiling $<...$(END_COLOR)"
 
 $(NAME):    ${OBJ} Makefile
-	@make --no-print-directory -C libft-pilagach all
-	@make --no-print-directory -C libft-pilagach clean
+	@make --no-print-directory -C lib/libft-pilagach all
+	@make --no-print-directory -C lib/libft-pilagach clean
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIB) -l readline
 	@rm -f ${OBJ}
 	@echo -e "$(GREEN)Compiled $(NAME) :)$(END_COLOR)"
