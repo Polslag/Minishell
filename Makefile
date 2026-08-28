@@ -18,6 +18,7 @@ SRCS    =    src/handle.c \
             src/redir.c \
             src/shell.c \
             src/syntax.c \
+			src/heredoc.c \
             src/token.c \
 			src/env_setup.c \
 			src/env_split.c \

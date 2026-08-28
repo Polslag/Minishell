@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:59:36 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 16:57:56 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	main(int ac, char **av, char **env)
 		input = readline("minishell$ ");
 		if (input == NULL)
 			ft_exit(data, 1);
-		if (input[0] != '\0')
-			add_history(input);
+		// if (input[0] != '\0')
+		// 	add_history(input);
 		data->cmd = check_token(input, data);
 		data->last_return = exec(data);
 	}

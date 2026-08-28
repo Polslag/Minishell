@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/18 04:00:07 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 10:27:40 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/28 16:35:25 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,16 @@ int	e_redir(t_command *cmd)
 		fd = open(path, O_RDONLY);
 		cmd->fd_in = fd;
 	}
+	else if (cmd->redir->type == TOKEN_HEREDOC)
+	{
+		if (cmd->fd_in != -1 && cmd->fd_in != STDIN_FILENO)
+		{
+			close(cmd->fd_in);
+		}
+		fd = heredoc(cmd->redir->file);
+		cmd->fd_in = fd;
+	}
+
 	free(path);
 	return (fd == -1);
 }

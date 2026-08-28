@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:58:03 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/28 15:47:34 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int						is_exit(char *input);
 t_command				*check_token(char *input, t_data *data);
 void					debug(t_command *cmd);
 char					*expand_word(char *raw, t_data *data);
+int						heredoc(char *limiter);
+
 //
 // built-in
 int						ft_pwd(void);
