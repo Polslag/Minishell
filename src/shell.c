@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 17:32:41 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/31 01:16:26 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int	g_signal = 0;
+
 void	handlesignal(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("\n");
+		g_signal = SIGINT;
+		write(1, "^C\n", 3);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -31,44 +34,44 @@ void	handlesignal(int signal)
 
 void	init_signals(void)
 {
+	rl_catch_signals = 0;
 	signal(SIGINT, handlesignal);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	is_exit(char *input)
+int	apply_signal(int ret)
 {
-	if (input == NULL)
-		return (1);
-	if (!ft_strcmp(input, "exit\0") || !ft_strcmp(input, "exit "))
-		return (1);
-	return (0);
+	if (g_signal == SIGINT)
+	{
+		g_signal = 0;
+		return (130);
+	}
+	return (ret);
 }
 
 t_command	*check_token(char *input, t_data *data)
 {
 	t_token		*tokens;
 	t_command	*cmd;
+	int			err;
 
-	tokens = lexer(input);
+	tokens = lexer(input, &err);
 	if (tokens == NULL)
 	{
+		if (err)
+			syntax_error(data);
 		free(input);
 		return (NULL);
 	}
 	if (syntax(tokens))
 	{
 		free_token_list(&tokens);
-		printf("%s\n", "error");
+		syntax_error(data);
 		free(input);
 		return (NULL);
 	}
 	cmd = parsing_commands(tokens, data);
 	free_token_list(&tokens);
-	if (cmd == NULL)
-	{
-		free(input);
-		return (NULL);
-	}
 	free(input);
 	return (cmd);
 }
@@ -80,23 +83,21 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	data = malloc(sizeof(t_data));
-	data->cmd = NULL;
-	data->envi = ft_envsetup(ft_tablen(env), env);
+	data = init_data(env);
+	if (!data)
+		return (1);
 	init_signals();
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (input == NULL)
-			ft_exit(data, 1);
+			ft_exit(NULL, data, 1);
+		data->last_return = apply_signal(data->last_return);
 		if (input[0] != '\0')
 			add_history(input);
+		free_command_list(&data->cmd);
 		data->cmd = check_token(input, data);
-		data->last_return = exec(data);
+		if (data->cmd)
+			data->last_return = apply_signal(exec(data));
 	}
-	rl_clear_history();
-	ft_freeenv(&data->envi);
-	free_command_list(&data->cmd);
-	free(data);
-	return (0);
 }

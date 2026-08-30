@@ -3,25 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:55:18 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/24 13:21:00 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/31 01:19:25 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*ft_search_key(t_env *envi, char *key)
+t_env	**ft_search_key(t_env **envi, char *key)
 {
-	t_env	*node;
+	t_env	**cur;
 
-	node = envi;
-	while (node)
+	if (!key[0])
+		return (NULL);
+	cur = envi;
+	while (*cur)
 	{
-		if (node->next && !ft_strncmp(node->next->key, key, ft_strlen(key)))
-			return (node);
-		node = node->next;
+		if (!ft_strcmp((*cur)->key, key))
+			return (cur);
+		cur = &(*cur)->next;
 	}
 	return (NULL);
 }
@@ -29,20 +31,20 @@ t_env	*ft_search_key(t_env *envi, char *key)
 int	ft_unset(t_env **envi, char **cmd)
 {
 	int		i;
-	t_env	*node;
+	t_env	**slot;
 	t_env	*tmp;
 
 	i = 1;
 	while (cmd[i])
 	{
-		node = ft_search_key(*envi, cmd[i]);
-		if (node)
+		slot = ft_search_key(envi, cmd[i]);
+		if (slot)
 		{
-			tmp = node->next->next;
-			free(node->next->key);
-			free(node->next->value);
-			free(node->next);
-			node->next = tmp;
+			tmp = (*slot)->next;
+			free((*slot)->key);
+			free((*slot)->value);
+			free(*slot);
+			*slot = tmp;
 		}
 		i++;
 	}

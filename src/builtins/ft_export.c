@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:50 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/24 13:21:22 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/30 22:36:50 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int	ft_check_key(char *key)
 {
 	int	j;
 
-	j = 0;
+	if (!key || !key[0])
+		return (1);
+	if (!ft_isalpha(key[0]) && key[0] != '_')
+		return (1);
+	j = 1;
 	while (key[j])
 	{
 		if (!ft_isalnum(key[j]) && key[j] != '_')
@@ -60,27 +64,41 @@ void	ft_change_key(char *s, char *key, t_env **envi)
 	return ;
 }
 
+static int	ft_export_arg(char **arg, int i, t_env **envi)
+{
+	char	*key;
+	int		error;
+
+	error = 0;
+	key = ft_export_key(arg[i]);
+	if (ft_check_key(key))
+		error = ft_export_error(arg[i]);
+	else if (ft_strchr(arg[i], '='))
+	{
+		if (!ft_already_key(key, envi))
+			ft_change_key(arg[i], key, envi);
+		else
+			ft_addenv(envi, arg, i);
+	}
+	else if (ft_already_key(key, envi))
+		ft_addenv_key(envi, key);
+	free(key);
+	return (error);
+}
+
 int	ft_export(char **arg, t_env **envi)
 {
-	int		i;
-	int		error;
-	char	*key;
+	int	i;
+	int	error;
 
+	if (!arg[1])
+		return (ft_export_list(*envi));
 	i = 1;
 	error = 0;
 	while (arg[i])
 	{
-		key = ft_split_key(arg, i);
-		if (!ft_check_key(key))
-		{
-			if (!ft_already_key(key, envi))
-				ft_change_key(arg[i], key, envi);
-			else
-				ft_addenv(envi, arg, i);
-		}
-		else
+		if (ft_export_arg(arg, i, envi))
 			error = 1;
-		free(key);
 		i++;
 	}
 	return (error);

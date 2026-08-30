@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 17:21:44 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/19 17:10:01 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/30 22:36:19 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ void	free_token_list(t_token **list)
 	*list = NULL;
 }
 
-t_token	*lexer(char *line)
+t_token	*lexer(char *line, int *err)
 {
 	t_token	*token_list;
 	int		i;
 
 	token_list = NULL;
 	i = 0;
+	*err = 0;
 	while (line[i] != '\0')
 	{
 		while (line[i] == ' ' || line[i] == '\t')
@@ -85,8 +86,8 @@ t_token	*lexer(char *line)
 		{
 			if (handle_word(line, &i, &token_list) == 1)
 			{
-				printf("%s", "error");
 				free_token_list(&token_list);
+				*err = 1;
 				return (NULL);
 			}
 		}

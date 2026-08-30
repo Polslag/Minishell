@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/28 07:20:00 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 14:59:23 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/30 23:29:30 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ char	*e_execbuilder(t_command *cmd, char **env)
 	char	*path;
 
 	envpath = obtain_path(env);
-	if (!envpath)
-		return (NULL);
-	path = NULL;
 	path = command_path(cmd->argv[0], envpath);
+	if (envpath)
+		ft_free_tab(envpath);
 	return (path);
 }
 
@@ -43,7 +42,7 @@ int	e_builtin(t_command *cmd, t_data *data)
 
 	ret = 0;
 	if (!ft_strcmp(cmd->argv[0], "cd"))
-		ret = ft_cd(cmd->argv[1], &(data->envi));
+		ret = ft_cd(cmd, &(data->envi));
 	else if (!ft_strcmp(cmd->argv[0], "env"))
 		ret = ft_env(&(data->envi));
 	else if (!ft_strcmp(cmd->argv[0], "export"))
@@ -55,18 +54,37 @@ int	e_builtin(t_command *cmd, t_data *data)
 	else if (!ft_strcmp(cmd->argv[0], "echo"))
 		ret = ft_echo(cmd);
 	else if (!ft_strcmp(cmd->argv[0], "exit"))
-		ret = ft_exit(data, 0);
+		ret = ft_exit(cmd, data, 0);
 	return (ret);
+}
+
+void	e_childfds(t_command *cmd, t_command *list)
+{
+	dup2(cmd->fd_in, 0);
+	dup2(cmd->fd_out, 1);
+	while (list)
+	{
+		if (list != cmd)
+		{
+			if (list->fd_in > 2)
+				close(list->fd_in);
+			if (list->fd_out > 2)
+				close(list->fd_out);
+		}
+		list = list->next;
+	}
 }
 
 int	e_child(t_command *cmd, t_data *data)
 {
-	char	*cmdpath;
-	char	**env;
-	int		ret;
+	char		*cmdpath;
+	char		**env;
+	int			ret;
+	struct stat	st;
 
-	dup2(cmd->fd_in, 0);
-	dup2(cmd->fd_out, 1);
+	e_childfds(cmd, data->cmd);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (check_builtin(cmd) == 0)
 	{
 		ret = e_builtin(cmd, data);
@@ -74,6 +92,11 @@ int	e_child(t_command *cmd, t_data *data)
 	}
 	env = convert_env_to_array(data->envi);
 	cmdpath = e_execbuilder(cmd, env);
-	execve(cmdpath, cmd->argv, env);
-	exit(127);
+	if (cmdpath && stat(cmdpath, &st) == 0 && S_ISDIR(st.st_mode))
+		errno = EISDIR;
+	else if (cmdpath)
+		execve(cmdpath, cmd->argv, env);
+	free(cmdpath);
+	ft_free_tab(env);
+	exit(e_exec_fail(cmd->argv[0], cmdpath != NULL));
 }

@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 14:14:33 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/26 02:55:19 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/30 22:36:25 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	get_envlen(t_env *env)
 	}
 	return (i);
 }
+
 void	ft_strcat(char *dst, char *src)
 {
 	while (*dst)
@@ -47,9 +48,9 @@ char	*ft_getenv_value(t_env *envi, char *key)
 
 char	**convert_env_to_array(t_env *env)
 {
-	t_env *node;
-	char **array;
-	int i;
+	t_env	*node;
+	char	**array;
+	int		i;
 
 	i = 0;
 	node = env;
@@ -58,13 +59,16 @@ char	**convert_env_to_array(t_env *env)
 		return (NULL);
 	while (node)
 	{
-		array[i] = (char *)ft_calloc(sizeof(char), (ft_strlen(node->key)
-					+ ft_strlen(node->value) + 2));
-		ft_strcat(array[i], node->key);
-		ft_strcat(array[i], "=");
-		ft_strcat(array[i], node->value);
+		if (node->value != NULL)
+		{
+			array[i] = (char *)ft_calloc(sizeof(char), (ft_strlen(node->key)
+						+ ft_strlen(node->value) + 2));
+			ft_strcat(array[i], node->key);
+			ft_strcat(array[i], "=");
+			ft_strcat(array[i], node->value);
+			i++;
+		}
 		node = node->next;
-		i++;
 	}
 	array[i] = NULL;
 	return (array);
