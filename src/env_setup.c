@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 13:14:53 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/30 23:58:28 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 15:51:23 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ void	ft_addenv(t_env **list, char **env, int i)
 	ft_inienv(&new);
 	new->key = ft_split_key(env, i);
 	new->value = ft_split_value(env, i);
-	if (!new->key)
+	if (!new->key || !new->value)
 	{
 		free(new->value);
+		free(new->key);
 		free(new);
 		return ;
 	}
@@ -66,6 +67,10 @@ t_env	*ft_envsetup(int env_len, char **env)
 	t_env	*envi;
 	int		i;
 
+	if (!env_len | !env)
+	{
+		return(NULL);
+	}
 	envi = NULL;
 	i = 0;
 	while (i < env_len)

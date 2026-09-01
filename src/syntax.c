@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 17:39:20 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/30 22:36:17 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 16:32:37 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	syntax(t_token *list)
 				|| current->next == NULL || current->next->type == TOKEN_PIPE))
 		{
 			return (1);
+		}
+		else if (current->type == TOKEN_PIPE && current->next->type == TOKEN_REDIR_OUT)
+		{
+			return(1);
 		}
 		else if ((current->type == TOKEN_APPEND
 				|| current->type == TOKEN_HEREDOC

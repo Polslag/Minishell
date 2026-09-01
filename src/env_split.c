@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 13:13:39 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/31 01:18:16 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 15:45:21 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ char	*ft_split_value(char **env, int i)
 	int		sep;
 
 	j = 0;
+	if (!env[i])
+	{
+		return(NULL);
+	}	
 	len_max = ft_strlen(env[i]);
 	sep_ptr = ft_strchr(env[i], '=');
 	if (!sep_ptr)
@@ -62,7 +66,10 @@ char	*ft_split_value(char **env, int i)
 	sep = sep_ptr - env[i] + 1;
 	ret = malloc(sizeof(char) * (len_max - sep + 1));
 	if (!ret)
+	{
+		free(ret);
 		return (NULL);
+	}
 	while (env[i][j + sep])
 	{
 		ret[j] = env[i][j + sep];

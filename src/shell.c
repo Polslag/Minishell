@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/09/01 12:25:40 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/09/01 16:27:03 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ t_command	*check_token(char *input, t_data *data)
 		free(input);
 		return (NULL);
 	}
+	if(syntax(tokens) == 5)
+	{
+		open(tokens->next->next->next->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
 	if (syntax(tokens))
 	{
 		free_token_list(&tokens);
@@ -85,7 +89,11 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	data = init_data(env);
 	if (!data)
+	{
+		ft_free_data(data);
+		free(data);
 		return (1);
+	}
 	init_signals();
 	while (1)
 	{
