@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/30 03:44:59 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/31 01:18:34 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 14:49:19 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	ft_freeenv(t_env **envi)
 {
 	t_env	*bob;
 
+	if(!envi)
+	{
+		return;
+	}
 	while ((*envi))
 	{
 		bob = (*envi)->next;
@@ -57,7 +61,13 @@ void	ft_freeenv(t_env **envi)
 
 void	ft_free_data(t_data *data)
 {
+	if(!data)
+	{
+		return;
+	}
 	ft_freeenv(&(data->envi));
 	ft_free_cmd(data->cmd);
 	data->cmd = NULL;
+	free(data);
+
 }

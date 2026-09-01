@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 17:46:42 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/31 01:16:26 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 14:46:41 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ t_command	*check_token(char *input, t_data *data)
 	int			err;
 
 	tokens = lexer(input, &err);
+	if (!data)
+	{
+		ft_free_data(data);
+		return(NULL);
+	}
 	if (tokens == NULL)
 	{
 		if (err)
@@ -85,7 +90,10 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	data = init_data(env);
 	if (!data)
+	{
+		ft_free_data(data);
 		return (1);
+	}
 	init_signals();
 	while (1)
 	{

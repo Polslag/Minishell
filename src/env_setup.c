@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 13:14:53 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/30 23:58:28 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 14:39:48 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int	ft_tablen(char **tab)
 
 void	ft_inienv(t_env **list)
 {
+	if(!list)
+	{
+		ft_freeenv(list);
+		return;
+	}
 	(*list)->key = NULL;
 	(*list)->value = NULL;
 	(*list)->next = NULL;
@@ -44,8 +49,10 @@ void	ft_addenv(t_env **list, char **env, int i)
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
-	if (!new)
+	if (!new){
+		free(new);
 		return ;
+	}
 	ft_inienv(&new);
 	new->key = ft_split_key(env, i);
 	new->value = ft_split_value(env, i);

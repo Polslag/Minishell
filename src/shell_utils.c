@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/30 02:38:47 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/31 01:15:33 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 14:19:26 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ t_data	*init_data(char **env)
 
 	data = malloc(sizeof(t_data));
 	if (!data)
+	{
+		ft_free_data(data);
+		free(data);
 		return (NULL);
+	}
 	data->cmd = NULL;
 	data->last_return = 0;
 	data->envi = ft_envsetup(ft_tablen(env), env);

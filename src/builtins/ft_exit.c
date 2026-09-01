@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/30 23:15:43 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 14:40:27 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,24 @@ int	ft_exit(t_command *cmd, t_data *data, int flag)
 	{
 		write(1, "exit\n", 5);
 		ft_free_data(data);
+		rl_clear_history();	
 		exit(0);
 	}
 	write(2, "exit\n", 5);
 	if (cmd->argv[1] && cmd->argv[2])
 	{
 		ft_error_output(data, "exit:", "too many arguments\n", RD);
+		rl_clear_history();
 		return (2);
 	}
 	if (cmd->argv[1])
 	{
 		ft_exit_arg(cmd, data);
+		rl_clear_history();
 		return (ft_exit_abc(cmd));
 	}
 	ft_free_data(data);
+	rl_clear_history();
 	exit(0);
 	return (1);
 }
