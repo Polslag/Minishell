@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   env_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 13:13:39 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 17:33:36 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/31 01:18:16 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_export_key(char *s)
+{
+	char	*sep;
+
+	sep = ft_strchr(s, '=');
+	if (!sep)
+		return (ft_strdup(s));
+	return (ft_substr(s, 0, sep - s));
+}
 
 char	*ft_split_key(char **env, int i)
 {

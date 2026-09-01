@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/28 16:09:14 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/28 16:15:49 by pilagach         ###   ########.fr       */
+/*   Created: 2026/08/30 14:23:08 by ysapelie          #+#    #+#             */
+/*   Updated: 2026/09/01 13:25:39 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,23 @@
 # define MINISHELL_H
 
 # include "libft-pilagach/libft.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include <sys/stat.h>
+
+# define GR "\033[32m"
+# define BL "\033[34m"
+# define RD "\033[31m"
+# define WH "\033[0m"
 
 typedef enum e_state
 {
@@ -86,7 +93,7 @@ typedef struct s_data
 int						ft_strncmp(const char *str1, const char *str2,
 							size_t n);
 
-t_token					*lexer(char *line);
+t_token					*lexer(char *line, int *err);
 int						syntax(t_token *list);
 int						handle_word(char *line, int *i, t_token **token_list);
 void					handle_operator(char *line, int *i,
@@ -100,9 +107,17 @@ void					free_token_list(t_token **list);
 
 t_redir					*redir_add(char *file, t_token_type type);
 void					redir_add_last(t_redir **list, t_redir *new_redir);
-char					*e_redirbuilder(t_command *cmd);
-int						e_redir(t_command *cmd);
+int						is_redir_type(t_token_type type);
+void					redir_mark_quote(t_redir *new_redir, t_token *current);
+int						add_word(char **argv, int *i, t_token *current,
+							t_data *data);
+int						e_redir_open(t_redir *redir, t_data *data);
+void					e_redir_bind(t_command *cmd, t_redir *redir, int fd);
+int						e_redir_apply(t_command *cmd, t_redir *redir,
+							t_data *data);
+int						e_redir(t_command *cmd, t_data *data);
 void					e_closefds(t_command *cmd);
+void					e_childfds(t_command *cmd, t_command *list);
 void					free_command_list(t_command **list);
 t_command				*command_add_init(void);
 void					command_add_last(t_command **list, t_command *new_cmd);
@@ -110,28 +125,52 @@ t_command				*parse_command(t_token **tokenn, t_data *data);
 t_command				*parsing_commands(t_token *tokens, t_data *data);
 void					init_signals(void);
 void					handlesignal(int signal);
-int						is_exit(char *input);
+int						apply_signal(int ret);
 t_command				*check_token(char *input, t_data *data);
+t_data					*init_data(char **env);
+void					syntax_error(t_data *data);
+int						handle_interrupt(t_data *data, char *input);
 void					debug(t_command *cmd);
 char					*expand_word(char *raw, t_data *data);
+char					*expand_dollar(char *raw, int *i, t_data *data);
+char					*expand_lookup(t_data *data, char *key);
+int						heredoc(char *limiter, int in_quote, t_data *data);
+int						write_all(int fd, char *s);
+char					*heredoc_body(char *limiter, int in_quote,
+							t_data *data);
+char					*heredoc_expand_line(char *raw, t_data *data);
+char					*heredoc_maybe_expand(char *buff, int in_quote,
+							t_data *data);
+char					*heredoc_append(char *str, char *buff);
+void					heredoc_sigint(int sig);
+int						heredoc_pipe(char *str);
+extern int				g_signal;
+void					ft_free_data(t_data *data);
+
 //
 // built-in
 int						ft_pwd(void);
-int						ft_cd(char *s, t_env **envi);
+int						ft_cd(t_command *cmd, t_env **envi);
+void					env_set_or_add(t_env **envi, char *key, char *value);
+char					*ft_cd_move(char *s, t_env **envi, char *oldpwd);
+int						ft_cd_check(t_command *cmd, t_env *envi, char **s,
+							int *is_dash);
 int						ft_env(t_env **envi);
 int						ft_export(char **arg, t_env **envi);
 int						ft_unset(t_env **envi, char **cmd);
 int						ft_echo(t_command *cmd);
-int						ft_exit(t_data *data, int flag);
+int						ft_exit(t_command *cmd, t_data *data, int flag);
 int						ft_isoperand(char c);
 int						ft_is_only_num(char *str);
-int						ft_exit_abc(t_data *data);
+int						ft_exit_abc(t_command *cmd);
 int						ft_already_key(char *key, t_env **envi);
 int						ft_check_key(char *key);
 void					ft_change_key(char *s, char *key, t_env **envi);
-t_env					*ft_search_key(t_env *envi, char *key);
-char					*get_home(t_env *envi);
+t_env					**ft_search_key(t_env **envi, char *key);
+char					*cd_home(t_env *envi);
 char					*ft_establish_path(char *s);
+void					cd_error(char *s);
+void					e_redir_error(char *file);
 void					newpwd(t_env **envi);
 void					pwdold(char *oldpwd, t_env **envi);
 // split value and key from env
@@ -143,9 +182,13 @@ void					ft_inienv(t_env **list);
 t_env					*ft_lstlast(t_env **list);
 void					ft_addenv(t_env **list, char **env, int i);
 t_env					*ft_envsetup(int env_len, char **env);
-// free utils
+// export
+char					*ft_export_key(char *s);
+int						ft_export_error(char *arg);
+void					ft_addenv_key(t_env **list, char *key);
+int						ft_export_list(t_env *envi);
+// free t_env
 void					ft_freeenv(t_env **envi);
-void					ft_free_data(t_data *data);
 // env_utils
 int						get_envlen(t_env *env);
 void					ft_strcat(char *dst, char *src);
@@ -162,10 +205,16 @@ int						check_builtin(t_command *cmd);
 int						e_builtin(t_command *cmd, t_data *data);
 int						e_child(t_command *cmd, t_data *data);
 int						e_fork(t_command *cmd, t_data *data);
+void					wait_sigint(int sig);
 int						e_wait(t_command *cmd);
 int						exec(t_data *data);
+void					e_skip(t_command *node, int pid);
+void					e_setup_fds(t_command *node, t_command *first);
+int						e_exec_direct(t_command *node, t_data *data);
+int						e_wait_status(pid_t pid, int status_old);
 
 void					ft_error_output(t_data *data, char *title,
-							char *content);
+							char *content, char *color);
+int						e_exec_fail(char *cmd, int found, t_data *data);
 
 #endif

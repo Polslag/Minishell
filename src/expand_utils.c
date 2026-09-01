@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/23 16:54:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/31 01:19:22 by ysapelie         ###   ########.fr       */
+/*   Created: 2026/08/30 02:44:22 by ysapelie          #+#    #+#             */
+/*   Updated: 2026/08/30 23:58:31 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(t_env **envi)
+char	*expand_lookup(t_data *data, char *key)
 {
-	t_env	*node;
+	char	*value;
 
-	node = (*envi);
-	while (node)
-	{
-		if (node->value != NULL)
-			printf("%s=%s\n", node->key, node->value);
-		node = node->next;
-	}
-	return (0);
+	if (!key)
+		return (NULL);
+	value = ft_getenv_value(data->envi, key);
+	free(key);
+	if (!value)
+		return (ft_strdup(""));
+	return (ft_strdup(value));
 }

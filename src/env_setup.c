@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 13:14:53 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/26 02:54:15 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/30 23:58:28 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,27 +42,23 @@ t_env	*ft_lstlast(t_env **list)
 void	ft_addenv(t_env **list, char **env, int i)
 {
 	t_env	*new;
-	t_env	*last;
 
-	new = NULL;
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return ;
 	ft_inienv(&new);
-	if (!(*list))
-	{
-		new->key = ft_split_key(env, i);
-		new->value = ft_split_value(env, i);
-		new->next = NULL;
-		(*list) = new;
-		return ;
-	}
-	last = ft_lstlast(list);
 	new->key = ft_split_key(env, i);
 	new->value = ft_split_value(env, i);
-	new->next = NULL;
-	last->next = new;
-	return ;
+	if (!new->key)
+	{
+		free(new->value);
+		free(new);
+		return ;
+	}
+	if (!(*list))
+		*list = new;
+	else
+		ft_lstlast(list)->next = new;
 }
 
 t_env	*ft_envsetup(int env_len, char **env)

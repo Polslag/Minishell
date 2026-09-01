@@ -6,7 +6,7 @@
 /*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 16:13:39 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/09/01 14:19:33 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,65 +21,68 @@ int	ft_isoperand(char c)
 
 int	ft_is_only_num(char *str)
 {
-	int	i;
+	int			i;
+	long long	value;
 
 	i = 0;
 	if (ft_isoperand(str[i]))
 		i++;
 	if (!str[i])
 		return (0);
+	value = 0;
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 0)
 			return (0);
+		if (value > (9223372036854775807LL - (str[i] - '0')) / 10)
+			return (0);
+		value = value * 10 + (str[i] - '0');
 		i++;
 	}
 	return (1);
 }
 
-int	ft_exit_abc(t_data *data)
+int	ft_exit_abc(t_command *cmd)
 {
-	// write(data->cmd->fd_out, RD, ft_strlen(RD));
-	write(data->cmd->fd_out, "exit: ", ft_strlen("exit: "));
-	write(data->cmd->fd_out, data->cmd->argv[1], ft_strlen(data->cmd->argv[1]));
-	write(data->cmd->fd_out, ": numeric argument required\n", 28);
-	// write(data->cmd->fd_out, WH, ft_strlen(WH));
-	ft_freeenv(&(data->envi));
-	ft_free_data(data);
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(cmd->argv[1], 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
 	return (2);
 }
 
-int	ft_exit(t_data *data, int flag)
+static void	ft_exit_arg(t_command *cmd, t_data *data)
 {
 	int	value;
 
+	if (ft_is_only_num(cmd->argv[1]))
+	{
+		value = ft_atoi(cmd->argv[1]);
+		ft_free_data(data);
+		exit(value);
+	}
+}
+
+int	ft_exit(t_command *cmd, t_data *data, int flag)
+{
+	rl_clear_history();
 	if (flag)
 	{
 		write(1, "exit\n", 5);
 		ft_free_data(data);
 		exit(0);
 	}
-	write(data->cmd->fd_out, "exit\n", 5);
-	if (data->cmd->argv[1] && data->cmd->argv[2])
+	write(2, "exit\n", 5);
+	if (cmd->argv[1] && cmd->argv[2])
 	{
-		ft_error_output(data, "exit:", " too many arguments\n");
-		return (1);
+		ft_error_output(data, "exit:", "too many arguments\n", RD);
+		return (2);
 	}
-	if (data->cmd->argv[1])
+	if (cmd->argv[1])
 	{
-		if (ft_is_only_num(data->cmd->argv[1]))
-		{
-			value = ft_atoi(data->cmd->argv[1]);
-			ft_free_data(data);
-			exit(value);
-		}
-		else
-			return (ft_exit_abc(data));
+		ft_exit_arg(cmd, data);
+		return (ft_exit_abc(cmd));
 	}
-	else
-	{
-		ft_free_data(data);
-		exit(0);
-	}
+	ft_free_data(data);
+	exit(0);
 	return (1);
 }

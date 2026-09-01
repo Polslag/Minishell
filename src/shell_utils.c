@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/23 16:54:47 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/31 01:19:22 by ysapelie         ###   ########.fr       */
+/*   Created: 2026/08/30 02:38:47 by ysapelie          #+#    #+#             */
+/*   Updated: 2026/08/31 01:15:33 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(t_env **envi)
+t_data	*init_data(char **env)
 {
-	t_env	*node;
+	t_data	*data;
 
-	node = (*envi);
-	while (node)
-	{
-		if (node->value != NULL)
-			printf("%s=%s\n", node->key, node->value);
-		node = node->next;
-	}
-	return (0);
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data->cmd = NULL;
+	data->last_return = 0;
+	data->envi = ft_envsetup(ft_tablen(env), env);
+	return (data);
+}
+
+void	syntax_error(t_data *data)
+{
+	ft_putstr_fd("minishell: syntax error\n", 2);
+	data->last_return = 2;
 }

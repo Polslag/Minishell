@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:54 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/24 13:21:17 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/31 01:19:23 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_pwd(void)
 	buf = getcwd(NULL, 0);
 	if (!buf)
 		return (EXIT_FAILURE);
-	printf("%s\n", buf);
+	ft_putendl_fd(buf, 1);
 	free(buf);
 	return (EXIT_SUCCESS);
 }

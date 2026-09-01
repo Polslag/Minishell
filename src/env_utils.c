@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/24 14:14:33 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 16:11:30 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/30 22:36:25 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,16 @@ char	**convert_env_to_array(t_env *env)
 		return (NULL);
 	while (node)
 	{
-		array[i] = (char *)ft_calloc(sizeof(char), (ft_strlen(node->key)
-					+ ft_strlen(node->value) + 2));
-		ft_strcat(array[i], node->key);
-		ft_strcat(array[i], "=");
-		ft_strcat(array[i], node->value);
+		if (node->value != NULL)
+		{
+			array[i] = (char *)ft_calloc(sizeof(char), (ft_strlen(node->key)
+						+ ft_strlen(node->value) + 2));
+			ft_strcat(array[i], node->key);
+			ft_strcat(array[i], "=");
+			ft_strcat(array[i], node->value);
+			i++;
+		}
 		node = node->next;
-		i++;
 	}
 	array[i] = NULL;
 	return (array);

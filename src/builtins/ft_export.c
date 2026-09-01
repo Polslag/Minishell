@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:50 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/28 17:59:43 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/30 22:36:50 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ int	ft_check_key(char *key)
 {
 	int	j;
 
-	j = 0;
-	// if ()
+	if (!key || !key[0])
+		return (1);
+	if (!ft_isalpha(key[0]) && key[0] != '_')
+		return (1);
+	j = 1;
 	while (key[j])
 	{
 		if (!ft_isalnum(key[j]) && key[j] != '_')
@@ -61,87 +64,41 @@ void	ft_change_key(char *s, char *key, t_env **envi)
 	return ;
 }
 
-// int	export_solo(t_env **envi)
-// {
-
-// }
-
-char	*ft_get_key(char *s)
+static int	ft_export_arg(char **arg, int i, t_env **envi)
 {
-	char	*ret;
-	char	*sep_ptr;
-	int		j;
-	int		sep;
+	char	*key;
+	int		error;
 
-	j = 0;
-	sep_ptr = ft_strchr(s, '=');
-	if (!sep_ptr)
-		return (s);
-	sep = sep_ptr - s;
-	ret = malloc(sizeof(char) * (sep + 1));
-	if (!ret)
-		return (NULL);
-	while (j < sep)
+	error = 0;
+	key = ft_export_key(arg[i]);
+	if (ft_check_key(key))
+		error = ft_export_error(arg[i]);
+	else if (ft_strchr(arg[i], '='))
 	{
-		ret[j] = s[j];
-		j++;
+		if (!ft_already_key(key, envi))
+			ft_change_key(arg[i], key, envi);
+		else
+			ft_addenv(envi, arg, i);
 	}
-	ret[j] = '\0';
-	return (ret);
-}
-
-void	ft_add_export(t_env **list, char **arg, int i)
-{
-	t_env	*new;
-	t_env	*last;
-
-	new = NULL;
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return ;
-	ft_inienv(&new);
-	last = ft_lstlast(list);
-	new->key = ft_get_key(arg[i]);
-	printf("new key = %s\narg = %s\ndiff entre les deux = %d\n", new->key, arg[i], ft_strcmp(new->key, arg[i]));
-	if (!ft_strcmp(new->key, arg[i]))
-		new->value = NULL;
-	else
-		new->value = ft_split_value(arg, i);
-	printf("value = %s\n", new->value);
-	new->next = NULL;
-	last->next = new;
-	last = last->next;
-	printf("%s=%s\n", last->key, last->value);
-	return ;
+	else if (ft_already_key(key, envi))
+		ft_addenv_key(envi, key);
+	free(key);
+	return (error);
 }
 
 int	ft_export(char **arg, t_env **envi)
 {
-	int		i;
-	int		error;
-	char	*key;
+	int	i;
+	int	error;
 
+	if (!arg[1])
+		return (ft_export_list(*envi));
 	i = 1;
 	error = 0;
-	// if (!arg[i])
-	// 	return (export_solo(envi));
 	while (arg[i])
 	{
-		key = ft_get_key(arg[i]);
-		printf("key = %s\n", key);
-		if (!ft_check_key(key))
-		{
-			if (!ft_already_key(key, envi))
-				ft_change_key(arg[i], key, envi);
-			else
-				ft_add_export(envi, arg, i);
-		}
-		else
+		if (ft_export_arg(arg, i, envi))
 			error = 1;
-		t_env *last = ft_lstlast(envi);
-		printf("\n\n\n");
-		printf("%s=%s\n", last->key, last->value);
-		free(key);
 		i++;
 	}
 	return (error);
