@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 15:41:31 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/19 17:10:09 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/30 23:58:34 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	handle_word(char *line, int *i, t_token **token_list)
 	if (state != NORMAL)
 		return (1);
 	word = ft_substr(line, start, *i - start);
+	if (!word)
+		return (1);
 	linked_list_add_last(token_list, linked_list_add(word, TOKEN_WORD));
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 17:39:20 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/19 17:10:00 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/01 16:42:45 by pilagach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int	syntax(t_token *list)
 		{
 			return (1);
 		}
+		else if (current->type == TOKEN_PIPE
+			&& current->next->type == TOKEN_REDIR_OUT)
+			return (1);
 		else if ((current->type == TOKEN_APPEND
 				|| current->type == TOKEN_HEREDOC
 				|| current->type == TOKEN_REDIR_IN

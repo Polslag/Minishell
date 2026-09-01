@@ -6,11 +6,23 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:44 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/26 05:45:16 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/08/30 22:36:41 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	is_dash_n(char *s)
+{
+	int	i;
+
+	if (!s || s[0] != '-' || s[1] == '\0')
+		return (0);
+	i = 1;
+	while (s[i] == 'n')
+		i++;
+	return (s[i] == '\0');
+}
 
 int	ft_echo(t_command *cmd)
 {
@@ -19,7 +31,7 @@ int	ft_echo(t_command *cmd)
 
 	i = 1;
 	nl_flag = 1;
-	while (cmd->argv[i] && !ft_strcmp(cmd->argv[i], "-n"))
+	while (cmd->argv[i] && is_dash_n(cmd->argv[i]))
 	{
 		nl_flag = 0;
 		i++;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/30 03:44:59 by ysapelie          #+#    #+#             */
+/*   Updated: 2026/09/01 16:52:07 by pilagach         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_free_redir(t_redir *redir)
@@ -45,7 +57,11 @@ void	ft_freeenv(t_env **envi)
 
 void	ft_free_data(t_data *data)
 {
+	if (data->cmd)
+		e_closefds(data->cmd);
 	ft_freeenv(&(data->envi));
 	ft_free_cmd(data->cmd);
 	data->cmd = NULL;
+	free(data);
+	rl_clear_history();
 }

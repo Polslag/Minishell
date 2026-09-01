@@ -3,36 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pilagach <pilagach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 16:54:38 by pilagach          #+#    #+#             */
-/*   Updated: 2026/08/24 13:21:33 by pilagach         ###   ########.fr       */
+/*   Updated: 2026/08/30 23:15:39 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_home(t_env *envi)
+char	*cd_home(t_env *envi)
 {
-	int		i;
 	char	*home;
 
-	home = "HOME";
-	while (envi->next != NULL)
+	home = ft_getenv_value(envi, "HOME");
+	if (!home)
 	{
-		i = 0;
-		while (envi->key[i] == home[i] && home[i])
-			i++;
-		if (!home[i])
-			return (envi->value);
-		envi = envi->next;
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		return (NULL);
 	}
-	i = 0;
-	while (envi->key[i] == home[i] && home[i])
-		i++;
-	if (!home[i])
-		return (envi->value);
-	return (NULL);
+	return (ft_strdup(home));
 }
 
 char	*ft_establish_path(char *s)
@@ -41,8 +31,13 @@ char	*ft_establish_path(char *s)
 	char	*ret;
 
 	if (s[0] == '/')
-		return (s);
+		return (ft_strdup(s));
 	ret = getcwd(NULL, 0);
+	if (!ret)
+	{
+		ft_putstr_fd("minishell: cd: error retrieving current directory\n", 2);
+		return (NULL);
+	}
 	pwd = ft_strjoin(ret, "/");
 	free(ret);
 	ret = ft_strjoin(pwd, s);
@@ -65,6 +60,7 @@ void	newpwd(t_env **envi)
 		}
 		node = node->next;
 	}
+	env_set_or_add(envi, "PWD", getcwd(NULL, 0));
 }
 
 void	pwdold(char *oldpwd, t_env **envi)
@@ -82,25 +78,24 @@ void	pwdold(char *oldpwd, t_env **envi)
 		}
 		node = node->next;
 	}
+	env_set_or_add(envi, "OLDPWD", oldpwd);
 }
 
-int	ft_cd(char *s, t_env **envi)
+int	ft_cd(t_command *cmd, t_env **envi)
 {
 	char	*path;
 	char	*oldpwd;
-	t_env	*e;
+	char	*s;
+	int		is_dash;
 
-	e = (*envi);
-	oldpwd = NULL;
+	if (ft_cd_check(cmd, *envi, &s, &is_dash))
+		return (1);
 	oldpwd = getcwd(NULL, 0);
-	if (!s)
-		path = get_home(e);
-	else
-		path = ft_establish_path(s);
+	path = ft_cd_move(s, envi, oldpwd);
 	if (!path)
 		return (1);
-	if (chdir(path) < 0)
-		return (1);
+	if (is_dash)
+		ft_putendl_fd(path, 1);
 	newpwd(envi);
 	pwdold(oldpwd, envi);
 	free(path);
