@@ -24,9 +24,6 @@ int	syntax(t_token *list)
 		{
 			return (1);
 		}
-		else if (current->type == TOKEN_PIPE
-			&& current->next->type == TOKEN_REDIR_OUT)
-			return (1);
 		else if ((current->type == TOKEN_APPEND
 				|| current->type == TOKEN_HEREDOC
 				|| current->type == TOKEN_REDIR_IN

@@ -88,6 +88,8 @@ typedef struct s_data
 	t_command			*cmd;
 	t_env				*envi;
 	int					last_return;
+	int					saved_in;
+	int					saved_out;
 }						t_data;
 
 int						ft_strncmp(const char *str1, const char *str2,
@@ -168,7 +170,6 @@ int						ft_check_key(char *key);
 void					ft_change_key(char *s, char *key, t_env **envi);
 t_env					**ft_search_key(t_env **envi, char *key);
 char					*cd_home(t_env *envi);
-char					*ft_establish_path(char *s);
 void					cd_error(char *s);
 void					e_redir_error(char *file);
 void					newpwd(t_env **envi);
@@ -211,7 +212,7 @@ int						exec(t_data *data);
 void					e_skip(t_command *node, int pid);
 void					e_setup_fds(t_command *node, t_command *first);
 int						e_exec_direct(t_command *node, t_data *data);
-int						e_wait_status(pid_t pid, int status_old);
+int						e_wait_status(pid_t pid, int status_old, int *quit);
 
 void					ft_error_output(t_data *data, char *title,
 							char *content, char *color);

@@ -25,21 +25,23 @@ int	ft_is_only_num(char *str)
 	long long	value;
 
 	i = 0;
+	while (str[i] == ' ' || (str[i] > 8 && str[i] < 14))
+		i++;
 	if (ft_isoperand(str[i]))
 		i++;
-	if (!str[i])
+	if (!ft_isdigit(str[i]))
 		return (0);
 	value = 0;
-	while (str[i])
+	while (ft_isdigit(str[i]))
 	{
-		if (ft_isdigit(str[i]) == 0)
-			return (0);
 		if (value > (9223372036854775807LL - (str[i] - '0')) / 10)
 			return (0);
 		value = value * 10 + (str[i] - '0');
 		i++;
 	}
-	return (1);
+	while (str[i] == ' ' || (str[i] > 8 && str[i] < 14))
+		i++;
+	return (str[i] == '\0');
 }
 
 int	ft_exit_abc(t_command *cmd)
@@ -64,14 +66,16 @@ static void	ft_exit_arg(t_command *cmd, t_data *data)
 
 int	ft_exit(t_command *cmd, t_data *data, int flag)
 {
+	int	ret;
+
 	rl_clear_history();
+	ret = data->last_return;
+	write(2, "exit\n", 5);
 	if (flag)
 	{
-		write(1, "exit\n", 5);
 		ft_free_data(data);
-		exit(0);
+		exit(ret);
 	}
-	write(2, "exit\n", 5);
 	if (cmd->argv[1] && cmd->argv[2])
 	{
 		ft_error_output(data, "exit:", "too many arguments\n", RD);
@@ -83,6 +87,6 @@ int	ft_exit(t_command *cmd, t_data *data, int flag)
 		return (ft_exit_abc(cmd));
 	}
 	ft_free_data(data);
-	exit(0);
+	exit(ret);
 	return (1);
 }

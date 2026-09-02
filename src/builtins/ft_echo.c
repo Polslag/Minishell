@@ -24,13 +24,28 @@ static int	is_dash_n(char *s)
 	return (s[i] == '\0');
 }
 
+static int	echo_put(int fd, char *s, int *err)
+{
+	if (*err)
+		return (1);
+	if (write(fd, s, ft_strlen(s)) < 0)
+	{
+		ft_putstr_fd("minishell: echo: write error: ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+		*err = 1;
+	}
+	return (*err);
+}
+
 int	ft_echo(t_command *cmd)
 {
 	int	i;
 	int	nl_flag;
+	int	err;
 
 	i = 1;
 	nl_flag = 1;
+	err = 0;
 	while (cmd->argv[i] && is_dash_n(cmd->argv[i]))
 	{
 		nl_flag = 0;
@@ -38,13 +53,13 @@ int	ft_echo(t_command *cmd)
 	}
 	while (cmd->argv[i] && cmd->argv[i + 1])
 	{
-		write(cmd->fd_out, cmd->argv[i], ft_strlen(cmd->argv[i]));
-		write(cmd->fd_out, " ", 1);
+		echo_put(cmd->fd_out, cmd->argv[i], &err);
+		echo_put(cmd->fd_out, " ", &err);
 		i++;
 	}
 	if (cmd->argv[i])
-		write(cmd->fd_out, cmd->argv[i], ft_strlen(cmd->argv[i]));
+		echo_put(cmd->fd_out, cmd->argv[i], &err);
 	if (nl_flag)
-		write(cmd->fd_out, "\n", 1);
-	return (0);
+		echo_put(cmd->fd_out, "\n", &err);
+	return (err);
 }

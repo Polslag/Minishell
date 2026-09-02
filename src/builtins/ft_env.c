@@ -20,7 +20,11 @@ int	ft_env(t_env **envi)
 	while (node)
 	{
 		if (node->value != NULL)
-			printf("%s=%s\n", node->key, node->value);
+		{
+			ft_putstr_fd(node->key, 1);
+			ft_putstr_fd("=", 1);
+			ft_putendl_fd(node->value, 1);
+		}
 		node = node->next;
 	}
 	return (0);

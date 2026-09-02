@@ -41,20 +41,24 @@ void	wait_sigint(int sig)
 int	e_wait(t_command *cmd)
 {
 	int	g_error;
+	int	quit;
 
 	g_error = 0;
+	quit = 0;
 	signal(SIGINT, wait_sigint);
 	while (cmd)
 	{
 		if (cmd->pid > 0)
-			g_error = e_wait_status(cmd->pid, g_error);
+			g_error = e_wait_status(cmd->pid, g_error, &quit);
 		else if (cmd->pid == -1)
 			g_error = 1;
+		else
+			g_error = 0;
 		cmd = cmd->next;
 	}
 	signal(SIGINT, handlesignal);
 	if (g_signal == SIGINT)
-		write(1, "\n", 1);
+		write(2, "\n", 1);
 	return (g_error);
 }
 

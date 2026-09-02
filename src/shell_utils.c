@@ -21,6 +21,8 @@ t_data	*init_data(char **env)
 		return (NULL);
 	data->cmd = NULL;
 	data->last_return = 0;
+	data->saved_in = -1;
+	data->saved_out = -1;
 	data->envi = ft_envsetup(ft_tablen(env), env);
 	return (data);
 }

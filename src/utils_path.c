@@ -12,12 +12,11 @@
 
 #include "minishell.h"
 
-static int	is_exec_file(char *p)
+static int	is_cmd_file(char *p)
 {
 	struct stat	st;
 
-	return (stat(p, &st) == 0 && S_ISREG(st.st_mode)
-		&& access(p, X_OK) == 0);
+	return (stat(p, &st) == 0 && S_ISREG(st.st_mode));
 }
 
 int	find_path_env(char **ev)
@@ -73,7 +72,7 @@ static char	*command_path_search(char *cmd, char **path)
 	while (path[i])
 	{
 		cmd_path = ft_strjoin(path[i], cmdslash);
-		if (is_exec_file(cmd_path))
+		if (is_cmd_file(cmd_path))
 		{
 			free(cmdslash);
 			return (cmd_path);

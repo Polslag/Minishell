@@ -59,6 +59,10 @@ void	ft_free_data(t_data *data)
 {
 	if (data->cmd)
 		e_closefds(data->cmd);
+	if (data->saved_in != -1)
+		close(data->saved_in);
+	if (data->saved_out != -1)
+		close(data->saved_out);
 	ft_freeenv(&(data->envi));
 	ft_free_cmd(data->cmd);
 	data->cmd = NULL;

@@ -6,7 +6,7 @@
 /*   By: ysapelie <ysapelie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/29 23:57:02 by ysapelie          #+#    #+#             */
-/*   Updated: 2026/08/30 22:36:36 by ysapelie         ###   ########.fr       */
+/*   Updated: 2026/09/02 11:38:10 by ysapelie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_cd_move(char *s, t_env **envi, char *oldpwd)
 	if (!s)
 		path = cd_home(*envi);
 	else
-		path = ft_establish_path(s);
+		path = ft_strdup(s);
 	if (!path)
 	{
 		free(oldpwd);
@@ -46,7 +46,7 @@ char	*ft_cd_move(char *s, t_env **envi, char *oldpwd)
 	}
 	if (chdir(path) < 0)
 	{
-		cd_error(s);
+		cd_error(path);
 		free(path);
 		free(oldpwd);
 		return (NULL);
@@ -60,7 +60,7 @@ int	ft_cd_check(t_command *cmd, t_env *envi, char **s, int *is_dash)
 	if (*s && cmd->argv[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return (1);
+		return (2);
 	}
 	if (*s && !(*s)[0])
 	{

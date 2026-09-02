@@ -30,29 +30,24 @@ void	e_setup_fds(t_command *node, t_command *first)
 
 int	e_exec_direct(t_command *node, t_data *data)
 {
-	int	saved_0;
-	int	saved_1;
 	int	ret;
 
-	saved_0 = dup(0);
-	saved_1 = dup(1);
+	data->saved_in = dup(0);
+	data->saved_out = dup(1);
 	dup2(node->fd_in, 0);
 	dup2(node->fd_out, 1);
-	if (!ft_strcmp(node->argv[0], "exit"))
-	{
-		close(saved_0);
-		close(saved_1);
-	}
 	ret = e_builtin(node, data);
-	dup2(saved_0, 0);
-	dup2(saved_1, 1);
-	close(saved_0);
-	close(saved_1);
+	dup2(data->saved_in, 0);
+	dup2(data->saved_out, 1);
+	close(data->saved_in);
+	close(data->saved_out);
+	data->saved_in = -1;
+	data->saved_out = -1;
 	e_closefds(node);
 	return (ret);
 }
 
-int	e_wait_status(pid_t pid, int status_old)
+int	e_wait_status(pid_t pid, int status_old, int *quit)
 {
 	int	wstatus;
 
@@ -60,6 +55,13 @@ int	e_wait_status(pid_t pid, int status_old)
 	if (WIFEXITED(wstatus))
 		return (WEXITSTATUS(wstatus));
 	if (WIFSIGNALED(wstatus))
+	{
+		if (WTERMSIG(wstatus) == SIGQUIT && !*quit)
+		{
+			ft_putstr_fd("Quit (core dumped)\n", 2);
+			*quit = 1;
+		}
 		return (128 + WTERMSIG(wstatus));
+	}
 	return (status_old);
 }

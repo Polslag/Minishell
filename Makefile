@@ -51,27 +51,30 @@ CFLAGS    =    -Wall -Wextra -Werror -Iinclude -Ilib -g
 # **************************************************************************** #
 # RULES
 
-%.o:    %.c
-	@${CC} ${CFLAGS} -c -g $< -o $@
-	@echo -e "$(BLUE)Compiling $<...$(END_COLOR)"
+%.o:    %.c ${HEADER}
+	@${CC} ${CFLAGS} -c $< -o $@
+	@echo -e "Compiling $<..."
 
-$(NAME):    ${OBJ} Makefile
-	@make --no-print-directory -C lib/libft-pilagach all
-	@make --no-print-directory -C lib/libft-pilagach clean
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIB) -l readline
-	@echo -e "$(GREEN)Compiled $(NAME) :)$(END_COLOR)"
+$(NAME):    ${LIB} ${OBJ} Makefile
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIB) -lreadline
+	@echo -e "Compiled $(NAME) :"
 
 all:    ${NAME}
 
+$(LIB):
+	@make --no-print-directory -C lib/libft-pilagach all
+
 clean:
 	@rm -f ${OBJ}
-	@echo -e "$(YELLOW)Removed object files.$(END_COLOR)"
+	@make --no-print-directory -C lib/libft-pilagach clean
+	@echo -e "Removed object files."
 
 fclean: clean
 	@rm -f ${NAME}
-	@echo -e "$(YELLOW)Cleaned libraries and $(NAME) executable.$(END_COLOR)"
+	@make --no-print-directory -C lib/libft-pilagach fclean
+	@echo -e "Cleaned libraries and $(NAME) executable."
 
 re:        fclean all
-	@echo -e "$(GREEN)Cleaned all and rebuilt $(NAME) and $(LIB)!$(END_COLOR)"
+	@echo -e "Cleaned all and rebuilt $(NAME) and $(LIB)"
 
 .PHONY:    all clean fclean re

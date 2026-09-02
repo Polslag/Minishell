@@ -14,12 +14,13 @@
 
 void	cd_error(char *s)
 {
+	int	err;
+
+	err = errno;
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(s, 2);
-	if (!access(s, F_OK))
-		ft_putstr_fd(": Not a directory\n", 2);
-	else
-		ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(err), 2);
 }
 
 void	e_redir_error(char *file)

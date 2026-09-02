@@ -25,42 +25,26 @@ char	*cd_home(t_env *envi)
 	return (ft_strdup(home));
 }
 
-char	*ft_establish_path(char *s)
-{
-	char	*pwd;
-	char	*ret;
-
-	if (s[0] == '/')
-		return (ft_strdup(s));
-	ret = getcwd(NULL, 0);
-	if (!ret)
-	{
-		ft_putstr_fd("minishell: cd: error retrieving current directory\n", 2);
-		return (NULL);
-	}
-	pwd = ft_strjoin(ret, "/");
-	free(ret);
-	ret = ft_strjoin(pwd, s);
-	free(pwd);
-	return (ret);
-}
-
 void	newpwd(t_env **envi)
 {
 	t_env	*node;
+	char	*tmp;
 
+	tmp = getcwd(NULL, 0);
+	if (!tmp)
+		return ;
 	node = (*envi);
 	while (node)
 	{
 		if (!ft_strcmp(node->key, "PWD"))
 		{
 			free(node->value);
-			node->value = getcwd(NULL, 0);
+			node->value = tmp;
 			return ;
 		}
 		node = node->next;
 	}
-	env_set_or_add(envi, "PWD", getcwd(NULL, 0));
+	env_set_or_add(envi, "PWD", tmp);
 }
 
 void	pwdold(char *oldpwd, t_env **envi)
